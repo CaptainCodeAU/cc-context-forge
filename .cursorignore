@@ -1,0 +1,7 @@
+# Keep workspace browsable while excluding heavy/generated content
+.git/
+node_modules/
+dist/
+build/
+coverage/
+*.log

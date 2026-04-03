@@ -1,0 +1,48 @@
+# Node modules and dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+.pnp/
+.pnp.js
+
+# Build output
+dist/
+build/
+out/
+
+# Environment files
+.env
+.env.*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE and editor folders/files
+.vscode/
+.idea/
+*.swp
+
+# Temporary files
+*.tmp
+*.temp
+~$*
+
+# Markdown caches and related tools
+.cache/
+.markdownlint-cli*
+.markdownlint.*
+.mdstat
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Miscellaneous
+*.log
+
+# Local configuration
+.local/
+
+# Session planning (Claude Code)
+Plans/
