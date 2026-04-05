@@ -2,7 +2,7 @@
 
 A system of prompt files that generate and maintain project documentation for Claude Code. Drop these files into any project, run them sequentially, and get comprehensive, consistent documentation that helps Claude understand your codebase.
 
-Current stable release: [`v1.1`](Releases/v1.1).  
+Current stable release: [`v2.0`](Releases/v2.0).  
 Repository metadata: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_MANIFEST.md`](RELEASE_MANIFEST.md), [`VERSION`](VERSION).
 
 ---
@@ -11,7 +11,7 @@ Repository metadata: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_MANIFEST.md`](REL
 
 ```bash
 # 1. Copy latest release's .prompts/ folder to your project
-cp -r Releases/v1.1/.prompts/ your-project/.prompts/
+cp -r Releases/v2.0/.prompts/ your-project/.prompts/
 
 # 2. Add to .gitignore
 echo ".prompts/" >> your-project/.gitignore
@@ -99,6 +99,18 @@ Releases/vX.X/
 ---
 
 ## Release History
+
+### v2.0 — 2026-04-05
+
+**Robust memory cross-referencing.** PROJECT_SURVEY.md Phase 5 gains 12 improvements: fallback discovery when YAML frontmatter is missing, conflict resolution for memory-vs-code contradictions, explicit merge plan format, state tracking throughout execution, conditional section checklist, memory coverage assessment criteria, and a complete processing trace example.
+
+- Fallback filename-based categorization when frontmatter is missing
+- Conflict resolution rules (code is ground truth for current state, memory for rationale)
+- Explicit merge plan format with inline/dedicated/folded categories
+- Phase 5 early exit check and state tracking template
+- Conditional section checklist (6.0) replaces inline CONDITIONAL comments
+- Memory coverage assessment: sparse/stale/comprehensive with defined criteria
+- All other prompt files unchanged (version header bumped)
 
 ### v1.1 — 2026-04-05
 

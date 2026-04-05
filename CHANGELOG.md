@@ -3,6 +3,27 @@
 All notable changes to cc-context-forge are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [2.0] — 2026-04-05
+
+### Added
+
+- PROJECT_SURVEY.md: Fallback memory file discovery via filename patterns when YAML frontmatter is missing (5.2.1)
+- PROJECT_SURVEY.md: Common memory filename hints for fallback directory scanning (5.1)
+- PROJECT_SURVEY.md: Conflict resolution rules for memory vs codebase contradictions (5.3.1)
+- PROJECT_SURVEY.md: Explicit merge plan format with inline/dedicated/folded categories (5.4)
+- PROJECT_SURVEY.md: Memory coverage assessment with sparse/stale/comprehensive criteria (5.6)
+- PROJECT_SURVEY.md: Percentage estimation guidance with precise and heuristic methods (5.5)
+- PROJECT_SURVEY.md: Conditional section checklist evaluated before writing output (6.0)
+- PROJECT_SURVEY.md: Phase 5 early exit check with prominent skip path
+- PROJECT_SURVEY.md: Phase 5 state tracking template maintained throughout execution
+- PROJECT_SURVEY.md: Example 5a — complete memory processing trace
+
+### Changed
+
+- PROJECT_SURVEY.md: YAML frontmatter handling now covers all scenarios (valid, missing type, malformed, missing) via decision tree (5.2)
+- PROJECT_SURVEY.md: Enrichment categories table gains "Target Section" column for direct mapping (5.3)
+- Version bump to 2.0 — significant structural improvements to Phase 5 methodology
+
 ## [1.1] — 2026-04-05
 
 ### Added
