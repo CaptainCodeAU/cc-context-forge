@@ -2,7 +2,7 @@
 
 A system of prompt files that generate and maintain project documentation for Claude Code. Drop these files into any project, run them sequentially, and get comprehensive, consistent documentation that helps Claude understand your codebase.
 
-Current stable release: [`v1.0`](Releases/v1.0).  
+Current stable release: [`v1.1`](Releases/v1.1).  
 Repository metadata: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_MANIFEST.md`](RELEASE_MANIFEST.md), [`VERSION`](VERSION).
 
 ---
@@ -11,7 +11,7 @@ Repository metadata: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_MANIFEST.md`](REL
 
 ```bash
 # 1. Copy latest release's .prompts/ folder to your project
-cp -r Releases/v1.0/.prompts/ your-project/.prompts/
+cp -r Releases/v1.1/.prompts/ your-project/.prompts/
 
 # 2. Add to .gitignore
 echo ".prompts/" >> your-project/.gitignore
@@ -99,6 +99,15 @@ Releases/vX.X/
 ---
 
 ## Release History
+
+### v1.1 — 2026-04-05
+
+**Memory-enriched project survey.** PROJECT_SURVEY.md now cross-references Claude Code's project memory to capture architecture decisions, war stories, operational workflows, and other knowledge that code alone can't reveal.
+
+- New Phase 5: Memory Cross-Reference (reads `~/.claude/projects/.../memory/`)
+- 11 conditional memory-enriched sections in survey output
+- Expanded from 5 to 6 phases (old Phase 5 → Phase 6: Output)
+- All other prompt files unchanged (version header bumped)
 
 ### v1.0 — 2026-04-03
 

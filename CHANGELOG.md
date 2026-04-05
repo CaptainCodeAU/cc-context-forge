@@ -3,6 +3,20 @@
 All notable changes to cc-context-forge are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.1] — 2026-04-05
+
+### Added
+
+- PROJECT_SURVEY.md: Phase 5 — Memory Cross-Reference that reads Claude Code's project memory (`~/.claude/projects/.../memory/`) and enriches the survey output with knowledge not derivable from code alone (architecture decisions, war stories, operational workflows, data state, debugging playbooks)
+- 11 conditional memory-enriched sections in the survey output template
+- New Example 5 demonstrating memory-enriched survey output
+- 5 memory-specific items in the completion checklist
+
+### Changed
+
+- PROJECT_SURVEY.md: Expanded from 5 phases to 6 phases (new Phase 5: Memory Cross-Reference, old Phase 5 renumbered to Phase 6: Output)
+- All prompt files carry `<!-- Version: 1.1 -->` header
+
 ## [1.0] — 2026-04-03
 
 ### Changed

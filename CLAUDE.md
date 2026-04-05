@@ -1,12 +1,13 @@
 # CLAUDE.md — cc-context-forge
 
 Prompt-file system that generates and maintains documentation for Claude Code projects.
-No build step, no runtime code — the product is 9 markdown prompt files in `Releases/v1.0/`.
+No build step, no runtime code — the product is 9 markdown prompt files per release.
 
 ## Repository Structure
 
 | Path | Purpose |
 |------|---------|
+| `Releases/v1.1/.prompts/` | Latest release — v1.1 prompt files (immutable) |
 | `Releases/v1.0/.prompts/` | Frozen v1.0 prompt files (immutable) |
 | `README.md` | Project README |
 | `CHANGELOG.md` | Version history (Keep a Changelog format) |
@@ -15,7 +16,7 @@ No build step, no runtime code — the product is 9 markdown prompt files in `Re
 
 ## Key Rules
 
-1. **Never modify files in `Releases/v1.0/.prompts/`** — released content is immutable
+1. **Never modify files in released `Releases/vX.Y/.prompts/` directories** — released content is immutable
 2. **Version format** — `VERSION` contains bare number (`1.0`). Directory names use `v` prefix (`v1.0/`). Prompt files use `<!-- Version: 1.0 -->` on line 2.
 3. **New releases** go in `Releases/vX.Y/.prompts/` directories. Update CHANGELOG.md, RELEASE_MANIFEST.md, VERSION, and README.md.
 4. **License is SimPL 2.0** (GPL-2.0 equivalent, open source)
