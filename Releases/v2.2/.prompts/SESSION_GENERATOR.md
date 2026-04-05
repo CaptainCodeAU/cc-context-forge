@@ -1,13 +1,15 @@
 # SESSION_GENERATOR.md
 <!-- Version: 2.2 -->
 
-> **What this file does:** Generates `docs/SESSION_HANDOFF.md` for session continuity. This file captures current state, what's in progress, and critical reminders — everything Claude needs to pick up where you left off.
+> **What this file does:** Generates `docs/SESSION_HANDOFF.md` for session continuity. This file captures current state, what's in progress, strategic choices ahead, and critical reminders — everything Claude needs to pick up where you left off.
 >
 > **How to run:** Prompt Claude Code with: `"Read .prompts/SESSION_GENERATOR.md and create docs/SESSION_HANDOFF.md"`
 >
 > **Pre-requisite:** Run PROJECT_SURVEY.md first. The survey output must be in context.
 >
 > **Output:** Creates `docs/SESSION_HANDOFF.md` (renames existing to `SESSION_HANDOFF_old.md` if present).
+>
+> **Companion docs:** This file works alongside EVOLUTION.md (backward-looking decisions log). SESSION_HANDOFF owns *forward-looking* state: where we are, what's next, which choices are open. EVOLUTION.md owns *backward-looking* history: what was decided and why. Don't duplicate — cross-reference.
 
 ---
 
@@ -24,7 +26,12 @@ You are about to generate `docs/SESSION_HANDOFF.md` for this project. This file 
 
 **Use the PROJECT_SURVEY_OUTPUT.md** (already in context) as your source of truth.
 
-**Key principle:** SESSION_HANDOFF.md answers "Where are we now?" while BOOTSTRAP_PROMPT.md answers "How does this work?" Keep them separate.
+**Key principle:** Three docs, three questions:
+- **BOOTSTRAP_PROMPT.md** → "How does this work?" (architecture, stable)
+- **SESSION_HANDOFF.md** → "Where are we now and what's next?" (volatile state + forward-looking choices)
+- **EVOLUTION.md** → "How did we get here?" (backward-looking decisions)
+
+Keep them separate. SESSION_HANDOFF is the only doc that looks *forward* — it owns open strategic choices, upcoming forks, and immediate next steps. This is its primary differentiator.
 
 ---
 
@@ -90,6 +97,13 @@ What's done and what's in progress. Use a table or bullet list.
 | Export feature | ⏳ Not Started | Phase 2 |
 ```
 
+**For pipeline/phased projects:**
+- **One row per stage/step** — not collapsed into coarse phases. If the project has Steps 1–5.1, each gets its own row. This lets a new session immediately see which specific stage is in progress vs complete.
+- **Include a `Test File(s)` column** mapping each stage to its test files. This lets the next session immediately find the relevant tests when working on a specific stage. Example: `filter-engine.test.ts, rule-management.test.ts`.
+- **Include meta-work as rows** when significant — e.g., "Docs", "Infrastructure", "Tooling" — if they are active workstreams with their own status.
+
+**Always include a test summary line** after the status table: total test count, file count, expect() count (if known), run command, approximate duration, and skip behavior. Example: "**Tests:** 512 pass across 24 files (799 `expect()` calls). Run: `just test` (~2 min). Tests skip gracefully when DB/LLM unavailable." This anchors the next session on test health without reading BOOTSTRAP.
+
 **Bullet format (good for smaller projects):**
 
 ```markdown
@@ -113,7 +127,7 @@ What's done and what's in progress. Use a table or bullet list.
 
 ### Section 4: Implementation Status (If Phased)
 
-For projects with defined phases or milestones.
+For projects with defined phases or milestones. **Be as granular as the project's actual steps** — don't collapse 6 distinct stages into 2 vague phases. Each meaningful step should be its own row so a new session can see exactly where progress stalled or is active.
 
 ```markdown
 ## Implementation Phases
@@ -127,6 +141,19 @@ For projects with defined phases or milestones.
 | Phase 5 | Export & Reports | ⏳ Not Started |
 
 **Currently working on:** Phase 3 — specifically schema matching for extracted data.
+```
+
+For multi-step pipelines, prefer step-level granularity:
+
+```markdown
+| Phase | Status |
+|-------|--------|
+| Step 1: Download | ✅ Complete |
+| Step 2: Ingest | ✅ Complete |
+| Step 3: Filter (rules) | ✅ Complete (3 rounds, 60 rules) |
+| Step 4: Classify (LLM) | 🔄 In Progress (FY2024-25 started) |
+| Step 5: Signal extraction | ✅ Complete (24 types) |
+| Docs: generator workflow | 🔄 In Progress |
 ```
 
 ---
@@ -148,6 +175,8 @@ modified:   tests/llm/extractor.test.ts
 **Summary:** Working on schema matching. Extractor changes are ready to commit; schema-matcher is WIP.
 ```
 
+**Per-file annotations are mandatory.** Don't just show `git status` output — add a one-line description of what changed in each file. A new session needs to know *what* is in each file, not just that it's modified. Group files into "Ready to commit" vs "WIP" when applicable.
+
 If nothing uncommitted:
 
 ```markdown
@@ -162,8 +191,29 @@ Working tree clean. Last commit: `feat: add PDF upload validation`
 
 Concrete next steps — not a roadmap, but immediate actions.
 
+**This section is SESSION_HANDOFF's most important contribution.** No other doc looks forward. BOOTSTRAP describes the system. EVOLUTION records past decisions. Only SESSION_HANDOFF answers "What should the next session work on, and what choices are open?"
+
+**Strategic decisions MUST come first.** If the project has reached a fork — multiple viable paths forward, a decision that affects scope or architecture, or a choice that the next session needs to make before proceeding — present it as named options (Option A/B/C) with:
+- Specific code references (DB columns, config paths, flags, table names)
+- A "Key question" directive: a command or investigation that would inform the choice
+- Enough context that a new session can make the call without re-reading the codebase
+
+If there are no open strategic decisions, say so explicitly: "No open strategic decisions — proceed with immediate tasks."
+
+Procedural tasks ("commit files", "run tests", "continue classification") go AFTER strategic context.
+
 ```markdown
 ## What Comes Next
+
+**Open decision — resolve before proceeding:**
+
+After classification completes, three paths forward:
+
+- **Option A: LLM Enrichment** — Send `needs_llm_enrichment = true` emails for structured extraction. `email_signals` table already has the flag.
+- **Option B: Human Review** — Build review workflow for `needs_review = true` classifications. DB columns exist: `reviewed`, `review_outcome` in `llm_classification_results`.
+- **Option C: Skip to Export** — If signal coverage is sufficient, package data for accountant. Config paths wired: `packagesRoot`, `reportsRoot`.
+
+**Key question:** Run `just extract-signals` then `just signals-report` to assess coverage. If strong signals cover most included emails, Option C is viable.
 
 **Immediate (this session or next):**
 
@@ -231,11 +281,17 @@ If no issues:
 No known issues currently blocking development.
 ```
 
+**Include a "Resolved recently" subsection** when issues were fixed in the current or previous session. These prevent a new session from re-investigating solved problems. Format: issue name, fix description, commit hash (if available).
+
+**Lifecycle:** Once a resolved issue is documented in `docs/EVOLUTION.md`, it can be dropped from SESSION_HANDOFF. EVOLUTION.md is the permanent record; SESSION_HANDOFF's "Resolved recently" is a temporary buffer (1-2 sessions) until the next EVOLUTION.md generation captures it.
+
 ---
 
 ### Section 9: Recent Decisions
 
-Key choices made recently that affect current work. These will eventually migrate to EVOLUTION.md.
+Key choices made recently that affect current work. This section is a **staging area** — decisions live here temporarily (current + previous session) until the next EVOLUTION.md generation absorbs them.
+
+**Only include decisions from the last 1-2 sessions.** If `docs/EVOLUTION.md` exists and already documents a decision, don't repeat it here — just reference EVOLUTION.md. This prevents the two files from drifting or contradicting each other.
 
 ```markdown
 ## Recent Decisions
@@ -246,7 +302,7 @@ Key choices made recently that affect current work. These will eventually migrat
 | Qwen 3 over GPT-4 | Local inference, no API costs, good enough quality | 2026-03-28 |
 | Store raw LLM responses | Debugging and reprocessing without re-calling LLM | 2026-03-28 |
 
-These will be moved to `docs/EVOLUTION.md` during maintenance.
+See `docs/EVOLUTION.md` for the full decision history.
 ```
 
 If no recent decisions:
@@ -254,7 +310,7 @@ If no recent decisions:
 ```markdown
 ## Recent Decisions
 
-No major decisions this session. See `docs/EVOLUTION.md` for historical decisions.
+No major decisions this session. See `docs/EVOLUTION.md` for the full decision history.
 ```
 
 ---
@@ -289,9 +345,19 @@ Before presenting the generated SESSION_HANDOFF.md, verify:
 - [ ] **Next steps are concrete** — specific files and tasks, not vague goals
 - [ ] **No architecture content** — that belongs in BOOTSTRAP_PROMPT.md
 - [ ] **No rules/commands** — those belong in CLAUDE.md
-- [ ] **Recent decisions documented** — even if they'll move to EVOLUTION.md later
+- [ ] **No duplicate decisions** — decisions already in EVOLUTION.md shouldn't be repeated here
+- [ ] **Recent decisions documented** — only from last 1-2 sessions, with EVOLUTION.md cross-reference
 - [ ] **Uncommitted changes listed** — from actual `git status`
-- [ ] **Known issues are current** — remove resolved issues
+- [ ] **Uncommitted changes annotated** — per-file descriptions, not just paths
+- [ ] **Known issues are current** — remove resolved issues already in EVOLUTION.md
+- [ ] **Resolved issues documented** — recently-fixed issues in "Resolved recently" (drop once in EVOLUTION.md)
+- [ ] **Test file mapping included** — each pipeline stage linked to its test file(s)
+- [ ] **Test summary line complete** — total count, file count, expect() count, run command, skip behavior
+- [ ] **Phases are granular** — one row per step/stage, not collapsed into coarse groups
+- [ ] **Meta-work tracked** — docs, tooling, infrastructure as status rows when active
+- [ ] **Strategic decisions surfaced** — open choices presented as named options with code refs, DB columns, config paths
+- [ ] **"What Comes Next" leads with strategy** — fork-in-the-road decisions before procedural tasks
+- [ ] **No open forks buried in prose** — if there's a choice to make, it's a named Option A/B/C, not a sentence
 
 ---
 
@@ -559,6 +625,7 @@ Once you've created `docs/SESSION_HANDOFF.md`, inform the user:
 > This file captures the current project state:
 > - Status: [summary — e.g., "Phase 3 in progress, 75% complete"]
 > - Uncommitted: [X] files modified
+> - Strategic: [open decision or "no open forks"]
 > - Next: [primary next task]
 >
 > Next: `"Read .prompts/EVOLUTION_GENERATOR.md and create docs/EVOLUTION.md"`

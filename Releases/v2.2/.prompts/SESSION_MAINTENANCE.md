@@ -13,6 +13,8 @@
 > - When switching focus to a different area
 >
 > **Output:** Updates `docs/SESSION_HANDOFF.md` in place (renames existing to `SESSION_HANDOFF_old.md` first).
+>
+> **Companion docs:** SESSION_HANDOFF.md is the sole *forward-looking* doc. EVOLUTION.md owns backward-looking history; BOOTSTRAP_PROMPT.md owns architecture. During maintenance, respect these boundaries — don't let backward-looking content (decided and done) accumulate in SESSION_HANDOFF when it belongs in EVOLUTION.md.
 
 ---
 
@@ -28,7 +30,12 @@ You are about to update `docs/SESSION_HANDOFF.md` based on work done during this
 4. Remove stale information
 5. Rename existing file to `SESSION_HANDOFF_old.md` before writing
 
-**Key principle:** SESSION_HANDOFF.md is a snapshot of "right now." It should be accurate enough that you (or another Claude session) can pick up exactly where things left off.
+**Key principle:** SESSION_HANDOFF.md is a snapshot of "right now" that looks forward. Three docs, three questions:
+- **BOOTSTRAP_PROMPT.md** → "How does this work?" (architecture, stable)
+- **SESSION_HANDOFF.md** → "Where are we now and what's next?" (volatile state + forward-looking choices)
+- **EVOLUTION.md** → "How did we get here?" (backward-looking decisions)
+
+SESSION_HANDOFF is the only doc that looks *forward* — its most important contribution is surfacing open strategic choices and upcoming forks. Protect this during maintenance: don't let procedural updates displace strategic context.
 
 ---
 
@@ -60,6 +67,7 @@ git log --oneline -10
 - Modified files (with brief description of changes)
 - New files (what they're for)
 - Files ready to commit vs still WIP
+- **Annotate each file** — don't just list paths; describe what changed in each (one line). This is the most-read section of the handoff.
 
 ### 2. Task Progress
 
@@ -79,6 +87,8 @@ For phased projects:
 - Did any phase status change?
 - What percentage complete is the current phase?
 - Is it time to move to the next phase?
+- **Maintain one row per step/stage** — don't collapse granular steps into coarse phases during updates. If the project has Steps 1–5.1, each stays its own row.
+- **Include meta-work rows** (Docs, Infrastructure, Tooling) when they're active workstreams.
 
 ### 4. Blockers and Issues
 
@@ -91,7 +101,14 @@ For phased projects:
 - Were any significant decisions made this session?
 - These should be noted here AND flagged for EVOLUTION.md
 
-### 6. Critical Context
+### 6. Test Changes
+
+- Did the test count change? (Run `just test` or check test output)
+- Were new test files added?
+- Are any tests failing?
+- Update the test summary line in the status section: total count, file count, `expect()` count (if known), run command, approximate duration, and skip behavior. Example: "**Tests:** 512 pass across 24 files (799 `expect()` calls). Run: `just test` (~2 min). Tests skip gracefully when DB/LLM unavailable."
+
+### 7. Critical Context
 
 - Any session-specific knowledge that must not be lost?
 - Debugging insights?
@@ -118,6 +135,8 @@ Update each section based on detected changes:
 | LLM extraction | 🔄 In Progress | Schema matching 80% done ← UPDATED |
 | UI dashboard | ⏳ Not Started | Blocked on extraction |
 ```
+
+**Preserve the test file mapping column.** If the status table has a `Test File(s)` column, keep it current. If new test files were added for a stage, add them. If a stage's tests were refactored, update the file names.
 
 **Bullet format (for simpler projects):**
 
@@ -190,6 +209,14 @@ Be specific and actionable:
 - Build minimal results viewer
 ```
 
+**Strategic options are the highest-priority content in this section.** "What Comes Next" is SESSION_HANDOFF's most important contribution — no other doc looks forward.
+
+- If the previous SESSION_HANDOFF had open decisions (Option A/B/C), **carry them forward** unless they've been resolved this session.
+- If a decision was made this session, move it to "Recent Decisions" and update "What Comes Next" to reflect the chosen path.
+- If new forks emerged during this session, **add them as named options** (Option A/B/C) with specific code references (DB columns, config paths, flags).
+- If there are no open strategic decisions, say so explicitly: "No open strategic decisions — proceed with immediate tasks."
+- **Never let procedural housekeeping displace strategic context.** Procedural tasks go after strategy.
+
 ### Updating Critical Reminders
 
 Add or remove based on current relevance:
@@ -219,19 +246,36 @@ Add resolved, remove fixed:
 **Blockers:** None currently
 ```
 
+### Updating Resolved Issues
+
+When issues are fixed this session:
+
+1. Move them from "Known Issues" to a "Resolved recently" subsection
+2. Add the fix description and commit hash
+3. **Lifecycle:** Once a resolved issue is documented in `docs/EVOLUTION.md`, drop it from SESSION_HANDOFF. EVOLUTION.md is the permanent record; SESSION_HANDOFF's "Resolved recently" is a temporary buffer (1-2 sessions) until the next EVOLUTION maintenance captures it.
+
+```markdown
+**Resolved recently:**
+
+| Issue | Fix | Commit |
+|-------|-----|--------|
+| ~~Nested arrays skipped~~ | Recursive flattening in schema-matcher.ts | `a1b2c3d` |
+```
+
 ### Updating Recent Decisions
 
-Capture decisions for migration to EVOLUTION.md:
+This section is a **staging area** — decisions live here temporarily (current + previous session) until EVOLUTION_MAINTENANCE absorbs them.
+
+**Only include decisions from the last 1-2 sessions.** If `docs/EVOLUTION.md` already documents a decision, don't repeat it — replace with an EVOLUTION.md cross-reference.
 
 ```markdown
 ## Recent Decisions
 
 | Decision | Why | Date |
 |----------|-----|------|
-| Flatten before match | Simpler logic, easier debugging | 2026-04-02 |
 | Chunk large PDFs | Prevents LM Studio crashes | 2026-04-03 | ← NEW
 
-**Note:** Run EVOLUTION_MAINTENANCE to move these to permanent record.
+See `docs/EVOLUTION.md` for the full decision history.
 ```
 
 ### Updating Session Notes
@@ -296,10 +340,20 @@ Before presenting the updated SESSION_HANDOFF.md, verify:
 - [ ] **Status is accurate** — reflects actual git status
 - [ ] **Completed items moved** — from "In Progress" to "Done"
 - [ ] **Next steps are concrete** — specific files and tasks
-- [ ] **Stale info removed** — old reminders, resolved issues
-- [ ] **Recent decisions captured** — for EVOLUTION migration
+- [ ] **Stale info removed** — old reminders, resolved issues already in EVOLUTION.md
+- [ ] **No duplicate decisions** — decisions already in EVOLUTION.md replaced with cross-reference
+- [ ] **Recent decisions as staging** — only last 1-2 sessions, with EVOLUTION.md cross-reference
 - [ ] **Session notes are current** — this session added, old pruned
 - [ ] **Uncommitted changes match reality** — run `git status` to verify
+- [ ] **Uncommitted changes annotated** — descriptions, not just paths
+- [ ] **Test file mapping preserved** — column still accurate
+- [ ] **Test summary line complete** — total count, file count, expect() count, run command, skip behavior
+- [ ] **Phases are granular** — one row per step/stage, not collapsed during updates
+- [ ] **Meta-work tracked** — docs, tooling, infrastructure as status rows when active
+- [ ] **Strategic options carried forward** — unless decision was made this session
+- [ ] **"What Comes Next" leads with strategy** — forks before procedures
+- [ ] **No open forks buried in prose** — choices are named Option A/B/C with code refs
+- [ ] **Resolved issues lifecycle** — drop from SESSION_HANDOFF once in EVOLUTION.md
 - [ ] **50-100 lines** — brief and focused
 
 ---
