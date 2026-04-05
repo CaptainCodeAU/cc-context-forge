@@ -11,7 +11,7 @@ Repository metadata: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_MANIFEST.md`](REL
 
 ```bash
 # 1. Copy latest release's .prompts/ folder to your project
-cp -r Releases/v2.1/.prompts/ your-project/.prompts/
+cp -r Releases/latest/.prompts/ your-project/.prompts/
 
 # 2. Add to .gitignore
 echo ".prompts/" >> your-project/.gitignore
@@ -28,7 +28,8 @@ echo ".prompts/" >> your-project/.gitignore
 
 ## Release Integrity
 
-- `Releases/v1.0/.prompts/` is frozen as immutable release content.
+- `Releases/latest` is a symlink to the current release directory.
+- Each versioned release in `Releases/vX.Y/.prompts/` is frozen as immutable content.
 - Verify prompt file checksums against [`RELEASE_MANIFEST.md`](RELEASE_MANIFEST.md) when needed.
 - Each release contains a `.prompts/` folder — copy it directly into your project and gitignore it.
 

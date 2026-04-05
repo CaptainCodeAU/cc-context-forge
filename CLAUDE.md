@@ -7,6 +7,7 @@ No build step, no runtime code — the product is 9 markdown prompt files per re
 
 | Path | Purpose |
 |------|---------|
+| `Releases/latest` | Symlink → current release directory (update on every release) |
 | `Releases/v2.1/.prompts/` | Latest release — v2.1 prompt files (immutable) |
 | `Releases/v2.0/.prompts/` | Frozen v2.0 prompt files (immutable) |
 | `Releases/v1.1/.prompts/` | Frozen v1.1 prompt files (immutable) |
@@ -36,4 +37,6 @@ No build step, no runtime code — the product is 9 markdown prompt files per re
 3. Update `<!-- Version: X.Y -->` in each prompt file
 4. Generate checksums: `shasum -a 256 Releases/vX.Y/.prompts/*.md`
 5. Update RELEASE_MANIFEST.md, CHANGELOG.md, VERSION
-6. Update release link in README.md
+6. Update `Releases/latest` symlink: `ln -sfn vX.Y Releases/latest`
+7. Update release link in README.md
+8. Create annotated tag: `git tag -a vX.Y -m "vX.Y — description"`
