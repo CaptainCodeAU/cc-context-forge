@@ -3,6 +3,14 @@
 All notable changes to cc-context-forge are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [2.1] — 2026-04-05
+
+### Added
+
+- PROJECT_SURVEY.md: Section 5.7 — Memory Health Assessment evaluates per-module memory coverage, recommends specific memories to create (with suggested filenames), and identifies stale memories to update
+- PROJECT_SURVEY.md: Memory Health output section with module coverage table, recommended memories, and stale memory list
+- PROJECT_SURVEY.md: Memory Health row in conditional section checklist (6.0)
+
 ## [2.0] — 2026-04-05
 
 ### Added

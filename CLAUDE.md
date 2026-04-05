@@ -7,7 +7,8 @@ No build step, no runtime code — the product is 9 markdown prompt files per re
 
 | Path | Purpose |
 |------|---------|
-| `Releases/v2.0/.prompts/` | Latest release — v2.0 prompt files (immutable) |
+| `Releases/v2.1/.prompts/` | Latest release — v2.1 prompt files (immutable) |
+| `Releases/v2.0/.prompts/` | Frozen v2.0 prompt files (immutable) |
 | `Releases/v1.1/.prompts/` | Frozen v1.1 prompt files (immutable) |
 | `Releases/v1.0/.prompts/` | Frozen v1.0 prompt files (immutable) |
 | `README.md` | Project README |

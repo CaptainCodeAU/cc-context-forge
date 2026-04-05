@@ -2,7 +2,7 @@
 
 A system of prompt files that generate and maintain project documentation for Claude Code. Drop these files into any project, run them sequentially, and get comprehensive, consistent documentation that helps Claude understand your codebase.
 
-Current stable release: [`v2.0`](Releases/v2.0).  
+Current stable release: [`v2.1`](Releases/v2.1).  
 Repository metadata: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_MANIFEST.md`](RELEASE_MANIFEST.md), [`VERSION`](VERSION).
 
 ---
@@ -11,7 +11,7 @@ Repository metadata: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_MANIFEST.md`](REL
 
 ```bash
 # 1. Copy latest release's .prompts/ folder to your project
-cp -r Releases/v2.0/.prompts/ your-project/.prompts/
+cp -r Releases/v2.1/.prompts/ your-project/.prompts/
 
 # 2. Add to .gitignore
 echo ".prompts/" >> your-project/.gitignore
@@ -99,6 +99,14 @@ Releases/vX.X/
 ---
 
 ## Release History
+
+### v2.1 — 2026-04-05
+
+**Memory health assessment.** PROJECT_SURVEY.md now evaluates per-module memory coverage and provides actionable recommendations: which memories to create (with suggested filenames), which are stale and need updating.
+
+- New Section 5.7: Memory Health Assessment with per-module evaluation criteria
+- New output section: Memory Health with coverage table and prioritized recommendations
+- All other prompt files unchanged (version header bumped)
 
 ### v2.0 — 2026-04-05
 
