@@ -7,7 +7,7 @@ No build step, no runtime code — the product is 9 markdown prompt files in `Re
 
 | Path | Purpose |
 |------|---------|
-| `Releases/v1.0/` | Frozen v1.0 prompt files (immutable) |
+| `Releases/v1.0/.prompts/` | Frozen v1.0 prompt files (immutable) |
 | `README.md` | Project README |
 | `CHANGELOG.md` | Version history (Keep a Changelog format) |
 | `RELEASE_MANIFEST.md` | SHA-256 checksums for release files |
@@ -15,9 +15,9 @@ No build step, no runtime code — the product is 9 markdown prompt files in `Re
 
 ## Key Rules
 
-1. **Never modify files in `Releases/v1.0/`** — released content is immutable
+1. **Never modify files in `Releases/v1.0/.prompts/`** — released content is immutable
 2. **Version format** — `VERSION` contains bare number (`1.0`). Directory names use `v` prefix (`v1.0/`). Prompt files use `<!-- Version: 1.0 -->` on line 2.
-3. **New releases** go in `Releases/vX.Y/` directories. Update CHANGELOG.md, RELEASE_MANIFEST.md, VERSION, and README.md.
+3. **New releases** go in `Releases/vX.Y/.prompts/` directories. Update CHANGELOG.md, RELEASE_MANIFEST.md, VERSION, and README.md.
 4. **License is SimPL 2.0** (GPL-2.0 equivalent, open source)
 
 ## File Naming Conventions
@@ -28,9 +28,9 @@ No build step, no runtime code — the product is 9 markdown prompt files in `Re
 
 ## Workflow for New Releases
 
-1. Create `Releases/vX.Y/` directory
+1. Create `Releases/vX.Y/.prompts/` directory
 2. Copy/modify prompt files into it
 3. Update `<!-- Version: X.Y -->` in each prompt file
-4. Generate checksums: `shasum -a 256 Releases/vX.Y/*.md`
+4. Generate checksums: `shasum -a 256 Releases/vX.Y/.prompts/*.md`
 5. Update RELEASE_MANIFEST.md, CHANGELOG.md, VERSION
 6. Update release link in README.md

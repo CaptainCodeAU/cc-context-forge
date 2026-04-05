@@ -5,6 +5,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [1.0] — 2026-04-03
 
+### Changed
+
+- Moved prompt files into `.prompts/` subfolder within each release (`Releases/v1.0/.prompts/`) so users can copy the folder directly to their project without guesswork
+
 ### Added
 
 - Complete documentation generation system: 5 generators + 4 maintenance prompts

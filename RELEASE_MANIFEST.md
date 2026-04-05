@@ -21,7 +21,7 @@ Checksums for verifying prompt file integrity. Generated with `shasum -a 256`.
 ### Verification
 
 ```bash
-cd Releases/v1.0 && shasum -a 256 -c <<'CHECKSUMS'
+cd Releases/v1.0/.prompts && shasum -a 256 -c <<'CHECKSUMS'
 6d7302b62c602915ab35b1438b5de19751a5955138c04ab0b67331bdbe1a766f  PROJECT_SURVEY.md
 4f0263e57873a546c976f515cfca3f7c128bd04e7c5945780990d97d7187f223  CLAUDE_GENERATOR.md
 cb7d638b1070e54c19fb1908ee6d1b470c4d20b7cac07242aa68b490c555f657  BOOTSTRAP_GENERATOR.md
