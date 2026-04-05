@@ -6,7 +6,7 @@
 > **How to run:** Prompt Claude Code with: `"Read .prompts/EVOLUTION_MAINTENANCE.md and update docs/EVOLUTION.md"`
 >
 > **When to run:**
-> - After making significant architectural decisions
+> - After making significant architectural OR operational workflow decisions
 > - After completing a feature or milestone
 > - After fixing a significant bug (worth documenting the lesson)
 > - After making breaking changes
@@ -14,6 +14,8 @@
 > - Before major releases or version tags
 >
 > **Output:** Updates `docs/EVOLUTION.md` in place (renames existing to `EVOLUTION_old.md` first).
+>
+> **Companion docs:** EVOLUTION.md is the permanent *backward-looking* record. SESSION_HANDOFF.md owns forward-looking state. When absorbing decisions from SESSION_HANDOFF, replace them there with an EVOLUTION.md cross-reference — don't leave duplicates across both files.
 
 ---
 
@@ -61,7 +63,7 @@ Check `docs/SESSION_HANDOFF.md` for the "Recent Decisions" section:
 | Chunk large PDFs | Prevents crashes | 2026-04-03 |
 ```
 
-**Action:** Convert each to a full EVOLUTION entry and remove from SESSION_HANDOFF.md
+**Action:** Convert each to a full EVOLUTION entry. In SESSION_HANDOFF.md, replace the absorbed decisions with a cross-reference: `See docs/EVOLUTION.md for the full decision history.` Don't leave duplicates across both files.
 
 ### 2. Git Commits Since Last Update
 
@@ -120,7 +122,7 @@ Each entry follows this format:
 
 | Type | When to Use | Example Title |
 |------|-------------|---------------|
-| **Decision** | Chose A over B, architectural choice | "Decision: Use Redis for sessions" |
+| **Decision** | Architectural, technology, OR operational workflow choices | "Decision: Use Redis for sessions", "Decision: Iterative rule proposal workflow" |
 | **Feature** | New functionality added | "Feature: PDF export with templates" |
 | **Bugfix** | Significant bug fixed (worth documenting) | "Bugfix: Memory leak in image processing" |
 | **Breaking** | Changes that break existing behavior | "Breaking: API response format v2" |
@@ -128,6 +130,33 @@ Each entry follows this format:
 | **Upgrade** | Dependency or platform upgrade | "Upgrade: Astro 4 → Astro 5" |
 | **Deprecation** | Feature being phased out | "Deprecation: Legacy auth endpoints" |
 | **Milestone** | Phase or version completed | "Milestone: Phase 2 complete" |
+
+**Don't limit "Decision" to architecture/technology.** Operational workflow discoveries are decisions too — e.g., "iterative propose→filter cycle resolves 49% of emails" is a decision about *how to work* that's just as important as a tech stack choice.
+
+---
+
+### Cross-Referencing Entries
+
+When a new entry validates, proves, or builds on an existing entry, **add a cross-reference in both directions**. This connects the narrative — "we designed X" ↔ "and here's where X saved us."
+
+- Mention the related entry's date, type, and decision ID inline in the **Why** or **Details** section
+- Don't create separate "See also" sections — keep it natural
+- Update the *existing* entry too (add one line referencing the new entry)
+
+Example: A new bugfix entry that was only recoverable because of an earlier reversibility decision → mention the decision ID in the bugfix's **Why**, and add a line to the decision's **Details** noting the vindication.
+
+### File References and Parked Items
+
+**Verify file references in new entries.** If referencing a file path, confirm it exists. If the file was removed or renamed, state so explicitly:
+- **Concept retained:** "Spec file removed (commit `abc123`), but concept planned as future work."
+- **Concept abandoned:** "Superseded by [alternative approach]."
+- **File moved:** "Moved from `docs/old.md` to `.prompts/new.md`."
+
+Never leave a dangling file reference — a future session will waste time looking for it.
+
+### Milestone Completeness
+
+When adding entries, check the Summary milestones list. **Every date that has changelog entries should have a milestone** unless the work was trivial (docs-only, config tweaks). If a date has a Decision-type entry, it warrants a milestone. Gaps in the timeline look like missing history.
 
 ---
 
@@ -280,11 +309,12 @@ After updating EVOLUTION.md, consider whether other files need updates:
 
 ### Suggest SESSION_MAINTENANCE if:
 
-- Moved decisions from SESSION_HANDOFF.md to here
-- Need to clear the "Recent Decisions" section
+- Absorbed decisions from SESSION_HANDOFF.md (need to replace with cross-reference)
+- Absorbed resolved issues from SESSION_HANDOFF.md (can now be dropped there)
+- Need to update the "Recent Decisions" section
 
 **Output:**
-> 💡 **Suggestion:** Decisions have been recorded in EVOLUTION.md. Run SESSION_MAINTENANCE to clear the "Recent Decisions" section in SESSION_HANDOFF.md.
+> 💡 **Suggestion:** Decisions have been absorbed into EVOLUTION.md. Run SESSION_MAINTENANCE to replace SESSION_HANDOFF's "Recent Decisions" with an EVOLUTION.md cross-reference and drop any "Resolved recently" items now covered here.
 
 ### Suggest BOOTSTRAP_MAINTENANCE if:
 
@@ -311,11 +341,16 @@ Before presenting the updated EVOLUTION.md, verify:
 - [ ] **New entries at top** — reverse chronological order maintained
 - [ ] **"Why" is substantive** — not just "it was better"
 - [ ] **Dates are accurate** — when the decision/change actually happened
-- [ ] **Types are correct** — using standard vocabulary
+- [ ] **Types are correct** — using standard vocabulary (including operational workflow decisions)
 - [ ] **Files are listed** — key files affected
+- [ ] **File references verified** — referenced files exist; removed files have status noted
 - [ ] **Summary updated** — if milestone reached
+- [ ] **Milestones complete** — every date with entries has a milestone (no unexplained gaps)
 - [ ] **Decision Index updated** — if present and decisions added
+- [ ] **Cross-references present** — new entries linked to related existing entries, bidirectionally
+- [ ] **Parked/removed items clarified** — concepts marked as retained, abandoned, or moved
 - [ ] **No duplicate entries** — check existing entries first
+- [ ] **No duplication with SESSION_HANDOFF** — absorbed decisions replaced with cross-reference there
 - [ ] **Old file backed up** — EVOLUTION_old.md exists
 
 ---

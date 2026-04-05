@@ -8,6 +8,8 @@
 > **Pre-requisite:** Run PROJECT_SURVEY.md first. The survey output must be in context.
 >
 > **Output:** Creates `docs/EVOLUTION.md` (renames existing to `EVOLUTION_old.md` if present).
+>
+> **Companion docs:** This file works alongside SESSION_HANDOFF.md (forward-looking state). EVOLUTION.md owns *backward-looking* history: what was decided, built, and learned. SESSION_HANDOFF.md owns *forward-looking* state: what's next and which choices are open. Don't duplicate — cross-reference.
 
 ---
 
@@ -75,12 +77,23 @@ For each significant commit or group of commits:
 | Description | What changed and why |
 | Files affected | Key files (not exhaustive) |
 
+**Don't limit "Decision" to architecture/technology choices.** Operational workflow discoveries are decisions too — e.g., "iterative propose→filter→re-propose cycle resolves 49% of emails" is a decision about *how to work* that's just as important as a tech stack choice. If a workflow pattern was discovered through experimentation and is now the recommended approach, it's a Decision entry.
+
 ### Grouping Commits
 
 Related commits can be grouped into a single entry:
 - Multiple commits for one feature → Single "Feature" entry
 - Bug + fix commits → Single "Bugfix" entry with problem and solution
 - Series of refactors → Single "Refactor" entry describing the transformation
+
+### Cross-Referencing Entries
+
+When one entry validates, proves, or builds on another, **add a cross-reference in both directions**. This connects the narrative — "we designed X" ↔ "and here's where X saved us." Examples:
+- A reversibility decision (D-007) validated by a cascade of bugs that were fixed via rollback
+- An architecture decision (D-003) that prevented a bug class from ever occurring
+- A feature entry that was groundwork for a later decision
+
+Format: mention the related entry's date, type, and decision ID inline in the **Why** or **Details** section. Don't create separate "See also" sections — keep it natural.
 
 ---
 
@@ -105,6 +118,8 @@ Generate `EVOLUTION.md` with the following sections.
 ### Section 2: Summary
 
 A brief overview of where the project stands and key milestones.
+
+**Milestone completeness:** Every date that has changelog entries should be represented in the milestones list, unless a date's work was truly trivial (docs-only, config tweaks). If a date has a Decision-type entry, it warrants a milestone. Gaps in the timeline look like missing history and confuse future readers.
 
 ```markdown
 ## Summary
@@ -146,13 +161,22 @@ The main content — reverse chronological entries.
 
 | Type | Use For | Example |
 |------|---------|---------|
-| **Decision** | Architectural choices, technology selections | "Decision: Use Drizzle over Prisma" |
+| **Decision** | Architectural, technology, OR operational workflow choices | "Decision: Use Drizzle over Prisma", "Decision: Iterative rule proposal workflow" |
 | **Feature** | New functionality added | "Feature: PDF upload with validation" |
 | **Bugfix** | Problem discovered and fixed | "Bugfix: HTMX form submission breaking" |
 | **Breaking** | Changes that break existing behavior | "Breaking: API response format changed" |
 | **Refactor** | Code restructuring without behavior change | "Refactor: Extract LLM logic to separate module" |
 | **Upgrade** | Dependency or platform upgrades | "Upgrade: Astro 4 → Astro 5" |
 | **Deprecation** | Features being phased out | "Deprecation: Old auth system" |
+
+#### File References and Parked Items
+
+**Verify file references exist.** If an entry mentions a file path, confirm it still exists. If the file was removed or renamed, state so explicitly and clarify the item's current status:
+- **Concept retained:** "Spec file removed in cleanup (commit `abc123`), but the concept is planned as future work. Groundwork laid in [related entry]."
+- **Concept abandoned:** "Spec removed; superseded by [alternative approach]."
+- **File moved:** "Moved from `docs/old-path.md` to `.prompts/new-path.md`."
+
+Never leave a dangling file reference without status — a future session will waste time looking for it.
 
 ---
 
@@ -184,7 +208,13 @@ Before presenting the generated EVOLUTION.md, verify:
 - [ ] **Dates are accurate** — From git history or survey
 - [ ] **No trivial entries** — Skip minor commits, focus on significant changes
 - [ ] **Files are relevant** — Key files only, not every file touched
+- [ ] **File references verified** — Referenced files still exist; removed files have status noted
 - [ ] **Summary reflects current state** — Accurate phase and milestones
+- [ ] **Milestones are complete** — Every date with entries has a milestone (no unexplained gaps)
+- [ ] **Operational decisions included** — Workflow patterns and process discoveries, not just tech/architecture
+- [ ] **Cross-references present** — Entries that validate or build on each other are linked bidirectionally
+- [ ] **Parked/removed items clarified** — Concepts marked as retained, abandoned, or moved
+- [ ] **No duplication with SESSION_HANDOFF** — Decisions here are backward-looking; forward-looking choices belong in SESSION_HANDOFF
 
 ---
 
