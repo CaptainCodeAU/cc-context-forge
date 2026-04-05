@@ -2,7 +2,7 @@
 
 A system of prompt files that generate and maintain project documentation for Claude Code. Drop these files into any project, run them sequentially, and get comprehensive, consistent documentation that helps Claude understand your codebase.
 
-Current stable release: [`v2.1`](Releases/v2.1).  
+Current stable release: [`v2.2`](Releases/v2.2).  
 Repository metadata: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_MANIFEST.md`](RELEASE_MANIFEST.md), [`VERSION`](VERSION).
 
 ---
@@ -100,6 +100,16 @@ Releases/vX.X/
 ---
 
 ## Release History
+
+### v2.2 — 2026-04-05
+
+**Complexity-scaled output and cross-document coordination.** All 8 generator and maintenance prompt files rewritten with Content Allocation Guides (Simple/Medium/Complex tiers), Anti-Degradation Safeguards, Cross-Reference Guides, and richer examples. CLAUDE.md generation shifts from fixed 200-line cap to complexity-tiered budgets. SESSION and EVOLUTION files gain cross-document coordination for decision lifecycle management.
+
+- CLAUDE_GENERATOR/MAINTENANCE: Content Allocation Guide, Env Var Reference section, Project Structure section, 10 detection areas, anti-degradation rules
+- BOOTSTRAP_GENERATOR/MAINTENANCE: API-reference quality mandate for key file exports, quirk completeness requirement, module coverage gap audit, 9 anti-degradation safeguards
+- SESSION_GENERATOR/MAINTENANCE: Test file mapping, per-file annotations, strategic-first next steps, resolved-issue tracking
+- EVOLUTION_GENERATOR/MAINTENANCE: Companion docs header, operational workflow decisions, bidirectional cross-referencing, file reference verification, milestone completeness
+- PROJECT_SURVEY.md unchanged (version header bumped)
 
 ### v2.1 — 2026-04-05
 

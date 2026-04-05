@@ -3,6 +3,37 @@
 All notable changes to cc-context-forge are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [2.2] — 2026-04-05
+
+### Changed
+
+- CLAUDE_GENERATOR.md: Replaced fixed 200-line cap with Content Allocation Guide (Simple 40-80, Medium 80-150, Complex 150-250 lines) based on 3-axis complexity scoring
+- CLAUDE_GENERATOR.md: Added cardinal rule — session must be self-sufficient from CLAUDE.md alone
+- CLAUDE_GENERATOR.md: Added Cross-Reference Guide mapping 14 content types to correct files
+- CLAUDE_GENERATOR.md: Expanded examples to 3 tiers (25/90/220 lines) with full env var, infrastructure, and project structure coverage
+- CLAUDE_MAINTENANCE.md: Expanded detection from 6 to 10 areas (added env vars, patterns, domain conventions, project structure)
+- CLAUDE_MAINTENANCE.md: Added Anti-Degradation Safeguards (6 rules) and Cross-Reference Guide
+- BOOTSTRAP_GENERATOR.md: Added Content Allocation Guide with BOOTSTRAP-specific axes (modules, pipeline stages, infrastructure)
+- BOOTSTRAP_GENERATOR.md: Added API-reference quality mandate — Key Files must list 2-5 exports by name
+- BOOTSTRAP_GENERATOR.md: Added quirk completeness requirement — list ALL bugs, not representative samples
+- BOOTSTRAP_GENERATOR.md: Added Anti-Patterns section (8 patterns to avoid) and Cross-Reference Guide
+- BOOTSTRAP_GENERATOR.md: Added complex project example (~220 lines) with 17 categorized quirks and 25+ key files
+- BOOTSTRAP_MAINTENANCE.md: Expanded detection from 7 to 9 areas (added module coverage gap audit, export change detection)
+- BOOTSTRAP_MAINTENANCE.md: Added Anti-Degradation Safeguards (9 rules including library module coverage)
+- SESSION_GENERATOR.md: Added test file mapping column for pipeline projects and mandatory test summary line
+- SESSION_GENERATOR.md: Added per-file annotation requirement for uncommitted changes
+- SESSION_GENERATOR.md: Added strategic-first next steps (Option A/B/C before procedural tasks)
+- SESSION_GENERATOR.md: Added resolved-issue tracking subsection with commit hashes
+- SESSION_MAINTENANCE.md: Added Test Changes detection area and test file mapping preservation
+- SESSION_MAINTENANCE.md: Added strategic option carry-forward and resolved issue tracking
+- EVOLUTION_GENERATOR.md: Added companion docs header establishing backward/forward-looking ownership with SESSION_HANDOFF
+- EVOLUTION_GENERATOR.md: Added operational workflow decisions as a Decision type
+- EVOLUTION_GENERATOR.md: Added bidirectional cross-referencing between entries and milestone completeness requirement
+- EVOLUTION_GENERATOR.md: Added file reference verification with retained/abandoned/moved taxonomy
+- EVOLUTION_MAINTENANCE.md: Added SESSION_HANDOFF absorption workflow with cross-reference replacement
+- EVOLUTION_MAINTENANCE.md: Added cross-referencing, file reference verification, and milestone completeness sections
+- Version bump to 2.2 across all 9 prompt files
+
 ## [2.1] — 2026-04-05
 
 ### Added
